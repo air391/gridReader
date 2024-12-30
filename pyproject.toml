@@ -1,0 +1,19 @@
+[project]
+name = "gridreader"
+version = "0.1.0"
+description = "Lib for reading grid data"
+readme = "README.md"
+authors = [
+    { name = "wqd", email = "wangqd@foxmail.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "kaitaistruct>=0.10",
+    "loguru>=0.7.3",
+    "numpy>=2.2.1",
+    "pandas[parquet]>=2.2.3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
