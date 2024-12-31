@@ -64,25 +64,25 @@ types:
         type: u2
       - id: sipm_current_ch0
         type: u2
-      - id: sipm_temprature_ch0
+      - id: sipm_temperature_ch0
         type: u2
       - id: sipm_voltage_ch1
         type: u2
       - id: sipm_current_ch1
         type: u2
-      - id: sipm_temprature_ch1
+      - id: sipm_temperature_ch1
         type: u2
       - id: sipm_voltage_ch2
         type: u2
       - id: sipm_current_ch2
         type: u2
-      - id: sipm_temprature_ch2
+      - id: sipm_temperature_ch2
         type: u2
       - id: sipm_voltage_ch3
         type: u2
       - id: sipm_current_ch3
         type: u2
-      - id: sipm_temprature_ch3
+      - id: sipm_temperature_ch3
         type: u2
       - id: count_rate0
         type: u2

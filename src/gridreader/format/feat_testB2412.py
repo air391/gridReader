@@ -22,6 +22,19 @@ class Frameseq(KaitaiStruct):
             i += 1
 
 
+    class Event(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.timestamp = self._io.read_u8be()
+            self.data_max = self._io.read_u2be()
+            self.data_base = self._io.read_u2be()
+
+
     class Frame(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
@@ -39,17 +52,15 @@ class Frameseq(KaitaiStruct):
             self.channel_n = self._io.read_u2be()
             self.event_number = self._io.read_u4be()
             self.pkg_event_num = self._io.read_u2be()
-            self.timestamp = self._io.read_u8be()
-            self.data_max = self._io.read_u2be()
-            self.data_base = []
-            for i in range(241):
-                self.data_base.append(self._io.read_u2be())
+            self.events = []
+            for i in range(41):
+                self.events.append(Frameseq.Event(self._io, self, self._root))
 
             self.buff_full_count = self._io.read_u2be()
             self.crc = self._io.read_u2be()
             self.tail = self._io.read_u4be()
             if not self.tail == 3423701026:
-                raise kaitaistruct.ValidationNotEqualError(3423701026, self.tail, self._io, u"/types/frame/seq/12")
+                raise kaitaistruct.ValidationNotEqualError(3423701026, self.tail, self._io, u"/types/frame/seq/10")
 
         @property
         def body_data(self):

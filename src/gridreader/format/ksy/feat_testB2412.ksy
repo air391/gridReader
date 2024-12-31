@@ -6,6 +6,14 @@ seq:
     type: frame
     repeat: eos
 types:
+  event:
+    seq:
+      - id: timestamp
+        type: u8
+      - id: data_max
+        type: u2
+      - id: data_base
+        type: u2
   frame:
     seq:
       - id: header
@@ -24,14 +32,10 @@ types:
         type: u4
       - id: pkg_event_num
         type: u2
-      - id: timestamp
-        type: u8
-      - id: data_max
-        type: u2
-      - id: data_base
-        type: u2
+      - id: events
+        type: event
         repeat: expr
-        repeat-expr: 241
+        repeat-expr: 41
       - id: buff_full_count
         type: u2
       - id: crc
