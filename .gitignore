@@ -5,9 +5,16 @@ build/
 dist/
 wheels/
 *.egg-info
+.coverage
 
 # Virtual environments
 .venv
 
 # log
 logs/
+
+#data
+tests/data
+
+#vscode
+.vscode
