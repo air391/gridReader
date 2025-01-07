@@ -1,6 +1,6 @@
 [project]
 name = "gridreader"
-version = "0.1.1"
+version = "0.1.2"
 description = "Lib for reading grid data"
 readme = "README.md"
 authors = [
@@ -24,3 +24,6 @@ dev = [
     "pytest>=8.3.4",
     "pytest-cov>=6.0.0",
 ]
+
+[project.scripts]
+gridreader = "gridreader.__main__:main"
