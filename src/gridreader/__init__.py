@@ -1,5 +1,10 @@
 from enum import Enum
-from .format import get_frames_with_seq, get_frames_with_header, DataSet, frame_to_dict, check_frames
+from .format import (get_frames_with_seq,
+                     get_frames_with_header,
+                     DataSet,
+                     frame_to_dict,
+                     check_frames,
+                     get_frame)
 from loguru import logger
 from .log import log_init
 from functools import partial
@@ -21,3 +26,14 @@ def parse_file(file_path:str, type: Enum, set:DataSet= DataSet.SCI):
 
     df = pd.DataFrame(dicts)
     return df
+
+def parse_frame(bs:bytes, type:Enum, set:DataSet= DataSet.SCI):
+    try:
+        frame = get_frame(type).from_bytes(bs)
+    except EOFError as e:
+        logger.warning(f"Failed to parse frame with {type}, trying to parse with frame specified by header: {e}")
+        raise e
+    except Exception as e:
+        logger.warning(f"Failed to parse frame with {type}, unknown error {e}")
+        raise e
+    return frame_to_dict(frame, type, set)

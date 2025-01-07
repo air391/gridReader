@@ -1,5 +1,5 @@
-from gridreader import parse_file
-from gridreader.format import TestB2412, DataSet, get_frames_with_seq
+from gridreader import parse_file, parse_frame
+from gridreader.format import TestB2412, DataSet, get_frames_with_seq, get_header_length
 import pytest
 
 def file_read(file_name):
@@ -84,3 +84,13 @@ def test_hk(hk_frames):
 def test_hk_frameseq(hk_frameseq):
     frames = get_frames_with_seq(hk_frameseq, TestB2412.HK)
     assert len(frames) == 2
+
+def test_bytes(feat_frameseq):
+    _, length = get_header_length(TestB2412.FEAT)
+    d = parse_frame(feat_frameseq[:length], TestB2412.FEAT, DataSet.ALL)
+    assert d['pkg_event_num'] == len(d['events'])
+
+def test_bytes_error(feat_frameseq):
+    _, length = get_header_length(TestB2412.FEAT)
+    with pytest.raises(EOFError):
+        parse_frame(feat_frameseq[:length-1], TestB2412.FEAT, DataSet.ALL)
