@@ -5,7 +5,7 @@ Universial reader for different GRID data format, convert different frame based 
 # Installing
 
 ```bash
-pip install -i https://test.pypi.org/simple/ gridreader
+pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple gridreader
 ```
 
 # Usage
