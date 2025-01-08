@@ -139,10 +139,18 @@ def get_frames_with_header(bs: bytes, type: Enum) -> list[KaitaiStruct]:
 
 def check_frames(frames: list[KaitaiStruct], type: Enum) -> Iterable[KaitaiStruct]:
     checker = get_checker(type)
+    error_count = 0
+    pass_count = 0
     for frame in frames:
         if checker(frame):
+            pass_count += 1
             yield frame
-
+        else:
+            error_count += 1
+            logger.trace(f"Frame {frame} with {type} Failed Checker")
+    logger.info(
+        f"Check {type} with Checker Failed {error_count} times, got {pass_count} frames"
+    )
 
 def frame_to_sci(frame: dict[str, Any], type: Enum) -> dict[str, Any]:
     match type:

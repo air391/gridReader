@@ -13,7 +13,7 @@ log_init()
 
 
 
-def parse_file(file_path:str, type: Enum, set:DataSet= DataSet.SCI):
+def parse_file(file_path:str, type: Enum, set:DataSet= DataSet.SCI, check_crc=True):
     with open(file_path, "rb") as f:
         data = f.read()
     try:
@@ -21,7 +21,7 @@ def parse_file(file_path:str, type: Enum, set:DataSet= DataSet.SCI):
     except Exception as e:
         logger.warning(f"Failed to parse file {file_path} with {type} Seq, trying to parse with frame specified by header: {e}")
         frames = get_frames_with_header(data, type)
-    frames_checked = check_frames(frames, type)
+    frames_checked = check_frames(frames, type) if check_crc else frames
     dicts = map(partial(frame_to_dict, type=type, set=set), frames_checked)
 
     df = pd.DataFrame(dicts)
