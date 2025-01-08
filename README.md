@@ -1,6 +1,6 @@
 # gridReader
 
-Universial reader for different GRID data format, convert different frame based data to pandas DataFrame.
+Universal reader for different GRID data format, convert different frame based data to pandas DataFrame.
 
 # Installing
 
