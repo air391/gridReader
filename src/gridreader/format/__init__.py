@@ -8,7 +8,10 @@ from ..log import log_init, logger
 from typing import Iterable, Callable, Any
 import re
 import crc
-
+import numpy as np
+from concurrent.futures import ProcessPoolExecutor
+from functools import partial
+from ..parity_check import crc16_xmodem_nd
 log_init()
 
 
@@ -93,12 +96,12 @@ crc16 = crc.Calculator(crc.Crc16.XMODEM, optimized=True)
 def get_checker(type: Enum) -> Callable[[KaitaiStruct], bool]:
     match type:
         case TestB2412.TEL:
-            return lambda f: f.sum == sum(f.body_data)
+            return lambda f: (f.sum, sum(f.body_data))
         case TestB2412.FEAT | TestB2412.WAVE:
-            return lambda f: crc16.verify(bytes(f.body_data), f.crc)
+            return lambda f: (f.crc, crc16.checksum(bytes(f.body_data)), crc16_xmodem_nd(np.array(f.body_data, dtype=np.uint8)))
         case TestB2412.HK:
             #TODO - HK data crc error
-            return lambda f: True
+            return lambda f: (f.crc16, crc16.checksum(bytes(f.body_data)), crc16_xmodem_nd(np.array(f.body_data, dtype=np.uint8)))
         case _:
             raise Exception("Not implemented")
 
@@ -142,7 +145,8 @@ def check_frames(frames: list[KaitaiStruct], type: Enum) -> Iterable[KaitaiStruc
     error_count = 0
     pass_count = 0
     for frame in frames:
-        if checker(frame):
+        check_result = checker(frame)
+        if check_result[0] == check_result[1]:
             pass_count += 1
             yield frame
         else:

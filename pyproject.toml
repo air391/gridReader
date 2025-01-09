@@ -23,6 +23,7 @@ build-backend = "hatchling.build"
 dev = [
     "pytest>=8.3.4",
     "pytest-cov>=6.0.0",
+    "viztracer>=1.0.0",
 ]
 
 [[tool.uv.index]]
